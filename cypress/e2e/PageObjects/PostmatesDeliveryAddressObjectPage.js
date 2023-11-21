@@ -28,6 +28,11 @@ class PostmatesDeliveryAddressSelectors
     {
         return cy.contains('Try again').as("Try again")
     }
+    selectAddressOption()
+    {
+        cy.get("#location-typeahead-home-input").type("test", { force: true })
+        return cy.contains('Seoul').invoke("show").click({ force: true })
+    }
 }
 //this is to make the class available for all other files in the framework
 export default PostmatesDeliveryAddressSelectors;

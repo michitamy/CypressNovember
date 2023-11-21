@@ -1,7 +1,9 @@
 /// <reference types="cypress"/>
 //importar las clases definiendo su ruta
+import { should } from 'chai'
 import AddressSelectors from './PageObjects/PostmatesDeliveryAddressObjectPage.js'
-describe("Set the address to delivery", () => {
+import OrdersSelectors from './PageObjects/PostmatesOrdersObjectPage.js'
+describe.skip("Set the address to delivery", () => {
 
     beforeEach("to load the page", () => {
         cy.visit("https://postmates.com/")
@@ -114,10 +116,27 @@ describe("Set the address to delivery", () => {
 
 
 })
-describe.skip('make an order', () => {
-    it.skip("add a item to the car", () => {
-        cy.get("#location-typeahead-home-input").type("test", { force: true })
-        cy.contains('Seoul').invoke("show").click({ force: true })
-        cy.get("#search-suggestions-typeahead-input").type("sushi")
+describe('make an order', () => {
+    beforeEach("load the page with a predefined delivery address",()=>
+    {
+        cy.visit("https://postmates.com/")
+        //cy.get("#location-typeahead-home-input").type("test", { force: true })
+    })
+    it("Add product to cart", () => {  
+        const addressDelivery = new AddressSelectors()
+        const ordersPage = new OrdersSelectors()
+        addressDelivery.selectAddressOption()
+        ordersPage.getSearchField().type('pasta')
+        ordersPage.selectOptionFood().click().then(()=>
+        {
+            cy.get(".bc").contains('pasta').should("exist")
+            cy.get("[data-testid='store-card']").first().click()
+            cy.get("[data-testid='store-menu-item--b110c398-6ed7-5cc5-bd69-ea1539c468a7']").click().then(()=>
+            {
+                cy.get("button").contains("Add 1 to order").click()
+            })
+            //cy.get("[data-test='cart-btn']").should('include',"0")
+        })
+        
     })
 })
