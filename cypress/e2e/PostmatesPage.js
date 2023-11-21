@@ -24,7 +24,7 @@ describe("Set the address to delivery", () => {
      * presionar el botón de buscar
      * si haber ingresado informacion
      */
-    it.skip("empty address", () => {
+    it("empty address", () => {
         const addressDelivery = new AddressSelectors()
         addressDelivery.getSearchButton().click({ force: true })
         //cy.contains('Search here').click({ force: true })
@@ -35,7 +35,7 @@ describe("Set the address to delivery", () => {
      * presionar el botón de buscar
      * si direccion de lugar pero con fecha de entrega
      */
-    it.skip("empty address, adding schedule for later", () => {
+    it("empty address, adding schedule for later", () => {
         const addressDelivery = new AddressSelectors()
         addressDelivery.getDeliverTime().click({force:true})
         //cy.contains("Deliver now").click({ force: true })
@@ -54,7 +54,7 @@ describe("Set the address to delivery", () => {
      * y de alli entrar a buscar lo que se va a encargar
      * nota: tuve que usar { force: true } por que los elementos estan cubiertos por algo
      */
-    it.skip("set an address", () => {
+    it("set an address", () => {
         // cy.contains("cookies").should('exist').then(() => {
         //     cy.contains("Got it").click({ force: true })
         // })
@@ -72,7 +72,7 @@ describe("Set the address to delivery", () => {
     /**
      * cuando la direccion es correcta pero no hay servicio para esa zona
      */
-    it.skip("An existing addres but out the range of service", () => {
+    it("An existing addres but out the range of service", () => {
         const addressDelivery = new AddressSelectors()
         addressDelivery.getAddressField().type("quintana roo", { force: true })
         cy.contains('Aruba').click({ force: true })
@@ -84,7 +84,7 @@ describe("Set the address to delivery", () => {
      * validar que el boton de limpiar exista y funciones
      */
 
-    it.skip("button of 'clear' displayed when there is text", () => {
+    it("button of 'clear' displayed when there is text", () => {
         const addressDelivery = new AddressSelectors()
         addressDelivery.getClearButton().should("not.exist")
         addressDelivery.getAddressField().type("lo que sea", { force: true })
@@ -102,10 +102,12 @@ describe("Set the address to delivery", () => {
      */
     const inputsAddress = ["0", "%^", "   "]
     inputsAddress.forEach((inputText) => {
-        it.only("add a unexisted address", () => {
+        it("add a unexisted address", () => {
             const addressDelivery = new AddressSelectors()
-            addressDelivery.getAddressField().type(inputText, { force: true })
-            addressDelivery.getNoResultMessage().should('exist')
+            addressDelivery.getAddressField().type(inputText, { force: true }).then(()=>
+            {
+                addressDelivery.getNoResultMessage().should('exist')
+            })
         })
     })
 
