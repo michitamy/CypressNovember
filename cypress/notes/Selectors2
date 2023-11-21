@@ -1,0 +1,13 @@
+//By ID:
+
+// // Using ID selector
+// cy.get('#myElementId');
+// By Class:
+
+
+// // Using Class selector
+// cy.get('.myElementClass');
+// By XPath:
+
+// // Using XPath selector
+// cy.xpath('//button[@id="submit-button"]');

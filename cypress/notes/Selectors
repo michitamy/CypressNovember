@@ -1,0 +1,55 @@
+//WITH GET
+
+//----- Using a CSS selector
+// cy.get('#myElement');
+
+//----- Using a class selector
+// cy.get('.myClass');
+
+//----- Using an attribute selector
+// cy.get('[data-test=myButton]');
+
+//----- Using a compound selector
+// cy.get('.parent-class .child-class');
+// Using cy.contains():
+
+//------------------------------------------------
+//----- Select by text content
+// cy.contains('Submit');
+
+//----- Select by partial text content
+// cy.contains('Sub');
+
+//----- Select by element and text content
+// cy.contains('.myClass', 'Submit');
+
+//------------------------------------------------
+
+//----- Using cy.find() (for chaining):
+//----- Chain commands to find elements within a parent element
+// cy.get('.parent-element').find('.child-element');
+
+
+//----- Using cy.eq() (for selecting a specific index from a collection):
+//----- Selecting the second element in a collection
+// cy.get('ul li').eq(1);
+
+
+//----- Using cy.filter() (for filtering elements based on a condition):
+//----- Filter elements based on a condition
+// cy.get('.myClass').filter(':visible');
+
+//----- Using cy.first() and cy.last():
+//----- Select the first element in a collection
+// cy.get('ul li').first();
+
+// // Select the last element in a collection
+// cy.get('ul li').last();
+
+//----- Using cy.contains() with Regular Expressions:
+//----- Select elements with text matching a regular expression
+// cy.contains(/submit/i); // Case-insensitive match for "submit"
+
+//----- Using cy.xpath() (XPath selector):
+//----- Select elements using XPath
+// cy.xpath('//button[@id="submit-button"]');
