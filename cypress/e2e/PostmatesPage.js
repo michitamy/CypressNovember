@@ -1,6 +1,5 @@
 /// <reference types="cypress"/>
 //importar las clases definiendo su ruta
-import { should } from 'chai'
 import AddressSelectors from './PageObjects/PostmatesDeliveryAddressObjectPage.js'
 import OrdersSelectors from './PageObjects/PostmatesOrdersObjectPage.js'
 describe.skip("Set the address to delivery", () => {
@@ -39,7 +38,7 @@ describe.skip("Set the address to delivery", () => {
      */
     it("empty address, adding schedule for later", () => {
         const addressDelivery = new AddressSelectors()
-        addressDelivery.getDeliverTime().click({force:true})
+        addressDelivery.getDeliverTime().click({ force: true })
         //cy.contains("Deliver now").click({ force: true })
         cy.contains("Schedule for later").click({ force: true })
         cy.contains("Schedule").click()
@@ -90,10 +89,10 @@ describe.skip("Set the address to delivery", () => {
         const addressDelivery = new AddressSelectors()
         addressDelivery.getClearButton().should("not.exist")
         addressDelivery.getAddressField().type("lo que sea", { force: true })
-        .then(() => {
-            addressDelivery.getClearButton().should('exist')
-            addressDelivery.getClearButton().click({ force: true })
-        })
+            .then(() => {
+                addressDelivery.getClearButton().should('exist')
+                addressDelivery.getClearButton().click({ force: true })
+            })
         addressDelivery.getAddressField().should('have.text', "")
 
 
@@ -106,8 +105,7 @@ describe.skip("Set the address to delivery", () => {
     inputsAddress.forEach((inputText) => {
         it("add a unexisted address", () => {
             const addressDelivery = new AddressSelectors()
-            addressDelivery.getAddressField().type(inputText, { force: true }).then(()=>
-            {
+            addressDelivery.getAddressField().type(inputText, { force: true }).then(() => {
                 addressDelivery.getNoResultMessage().should('exist')
             })
         })
@@ -117,26 +115,49 @@ describe.skip("Set the address to delivery", () => {
 
 })
 describe('make an order', () => {
-    beforeEach("load the page with a predefined delivery address",()=>
-    {
+    beforeEach("load the page with a predefined delivery address", () => {
         cy.visit("https://postmates.com/")
+        cy.viewport(1440, 900)
         //cy.get("#location-typeahead-home-input").type("test", { force: true })
     })
-    it("Add product to cart", () => {  
+
+    /**
+     * 
+     * Este caso de prueba solo funciona cuando el restaurante 
+     * esta en horario de servicio 
+     * 
+     * */
+    it.skip("Add product to cart", () => {
         const addressDelivery = new AddressSelectors()
         const ordersPage = new OrdersSelectors()
         addressDelivery.selectAddressOption()
-        ordersPage.getSearchField().type('pasta')
-        ordersPage.selectOptionFood().click().then(()=>
-        {
+        ordersPage.getSearchField().type('pasta {enter}').then(() => {
+            //ordersPage.selectOptionFood().click().then(()=>{
             cy.get(".bc").contains('pasta').should("exist")
+            cy.get("button[data-test='cart-btn']").should('contain', '0')
             cy.get("[data-testid='store-card']").first().click()
-            cy.get("[data-testid='store-menu-item--b110c398-6ed7-5cc5-bd69-ea1539c468a7']").click().then(()=>
-            {
+            cy.get("[data-testid='store-menu-item--b110c398-6ed7-5cc5-bd69-ea1539c468a7']").click().then(() => {
                 cy.get("button").contains("Add 1 to order").click()
             })
-            //cy.get("[data-test='cart-btn']").should('include',"0")
+            cy.get("button[data-test='cart-btn']").should('contain', "1")
         })
-        
+        //como puedo hacer mock de una hora? par aprobar cuando un restaurant esta cerrado
+    })
+    
+    /**
+     * cuando el restaurant ya esta cerrado
+     */
+    it.skip("when a resturant it's closed", () => {
+        const addressDelivery = new AddressSelectors()
+        const ordersPage = new OrdersSelectors()
+        addressDelivery.selectAddressOption()
+        ordersPage.getSearchField().type('pasta {enter}')
+        ordersPage.selectFirstRestaurant().first().click().then(() => {
+            cy.get('[data-test="modality-pill"]').should('include.text', 'Closed')
+        })
+
+        //no entiendo por que en cypres el encabezado sale como lugar muy lejos
+        //y en browser de chrome sale que el restaurante sale cerrado
+        //(thinking)
     })
 })

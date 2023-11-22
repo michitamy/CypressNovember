@@ -31,7 +31,7 @@ class PostmatesDeliveryAddressSelectors
     selectAddressOption()
     {
         cy.get("#location-typeahead-home-input").type("test", { force: true })
-        return cy.contains('Seoul').invoke("show").click({ force: true })
+        return cy.contains('Ocha').invoke("show").click({ force: true })
     }
 }
 //this is to make the class available for all other files in the framework

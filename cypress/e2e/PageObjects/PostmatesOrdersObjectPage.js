@@ -8,5 +8,9 @@ class PostmateOrdersObjectPage
  {
     return cy.contains('Search for "pasta"')
  }
+ selectFirstRestaurant()
+ {
+    return cy.get("[data-testid='store-card']")
+ }
 }
 export default PostmateOrdersObjectPage
