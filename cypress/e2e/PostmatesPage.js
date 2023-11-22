@@ -143,7 +143,17 @@ describe('make an order', () => {
         })
         //como puedo hacer mock de una hora? par aprobar cuando un restaurant esta cerrado
     })
-    
+    it("remove an element from the cart",()=>
+    {
+        const addressPage = new AddressSelectors()
+        const ordersPage = new OrdersSelectors()
+        addressPage.selectAddressOption()
+        ordersPage.getSearchField().type('sushi {enter}').then('until the action finished',()=>
+        {
+            cy.get("[data-testid='store-card']").first().click()
+
+        })
+    })
     /**
      * cuando el restaurant ya esta cerrado
      */
