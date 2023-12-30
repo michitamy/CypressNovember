@@ -2,7 +2,7 @@
 //importar las clases definiendo su ruta
 import AddressSelectors from './PageObjects/PostmatesDeliveryAddressObjectPage.js'
 import OrdersSelectors from './PageObjects/PostmatesOrdersObjectPage.js'
-describe.skip("Set the address to delivery", () => {
+describe("Set the address to delivery", () => {
 
     beforeEach("to load the page", () => {
         cy.visit("https://postmates.com/")
@@ -28,7 +28,6 @@ describe.skip("Set the address to delivery", () => {
     it("empty address", () => {
         const addressDelivery = new AddressSelectors()
         addressDelivery.getSearchButton().click({ force: true })
-        //cy.contains('Search here').click({ force: true })
         //I think this should display an error message for the user, so the know the infomation needed
     })
 
@@ -39,12 +38,10 @@ describe.skip("Set the address to delivery", () => {
     it("empty address, adding schedule for later", () => {
         const addressDelivery = new AddressSelectors()
         addressDelivery.getDeliverTime().click({ force: true })
-        //cy.contains("Deliver now").click({ force: true })
         cy.contains("Schedule for later").click({ force: true })
         cy.contains("Schedule").click()
         cy.wait(2000)
         addressDelivery.getSearchButton().click({ force: true })
-        //cy.contains('Search here').click({ force: true })
         //I think this should display an error message for the user, so the know the infomation needed
     })
 
@@ -56,10 +53,6 @@ describe.skip("Set the address to delivery", () => {
      * nota: tuve que usar { force: true } por que los elementos estan cubiertos por algo
      */
     it("set an address", () => {
-        // cy.contains("cookies").should('exist').then(() => {
-        //     cy.contains("Got it").click({ force: true })
-        // })
-
         const addressDelivery = new AddressSelectors()
         addressDelivery.getAddressField().type("Ocha", { force: true })
         //cy.get("#location-typeahead-home-input").type("test", { force: true })
@@ -75,8 +68,8 @@ describe.skip("Set the address to delivery", () => {
      */
     it("An existing addres but out the range of service", () => {
         const addressDelivery = new AddressSelectors()
-        addressDelivery.getAddressField().type("quintana roo", { force: true })
-        cy.contains('Aruba').click({ force: true })
+        addressDelivery.getAddressField().type("Calle General Carlos Pacheco 7", { force: true })
+        cy.contains('Calle General').click({ force: true })
         cy.get("#main-content").should('contain', "only available within the United States")
 
         // })
@@ -143,7 +136,10 @@ describe('make an order', () => {
             ordersPage.getCartButton().should('contain', "1")
         //como puedo hacer mock de una hora? par aprobar cuando un restaurant esta cerrado
     })
-    it("remove an element from the cart",()=>
+     /**
+      * el caso de remover producto del carrito esta incompleto
+      */
+    it.skip("remove an element from the cart",()=>
     {
         const addressPage = new AddressSelectors()
         const ordersPage = new OrdersSelectors()
