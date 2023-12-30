@@ -8,9 +8,21 @@ class PostmateOrdersObjectPage
  {
     return cy.contains('Search for "pasta"')
  }
- selectFirstRestaurant()
+ getFirstRestaurant()
  {
-    return cy.get("[data-testid='store-card']")
+    return cy.get("[data-testid='store-card']").first()
+ }
+ getDeliveryButtonOption()
+ {
+   return cy.get("div [role='radio']").contains('Delivery')
+ }
+ getFieldOfBaseOfSearch()
+ {
+   return cy.get('div h1')
+ }
+ getCartButton()
+ {
+   return cy.get("button[data-test='cart-btn']")
  }
 }
 export default PostmateOrdersObjectPage

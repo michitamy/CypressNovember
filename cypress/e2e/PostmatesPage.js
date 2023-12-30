@@ -61,7 +61,7 @@ describe.skip("Set the address to delivery", () => {
         // })
 
         const addressDelivery = new AddressSelectors()
-        addressDelivery.getAddressField().type("test", { force: true })
+        addressDelivery.getAddressField().type("Ocha", { force: true })
         //cy.get("#location-typeahead-home-input").type("test", { force: true })
         addressDelivery.getDeliverTime().should('exist')
         //cy.contains("Deliver now").should('exist')
@@ -127,20 +127,20 @@ describe('make an order', () => {
      * esta en horario de servicio 
      * 
      * */
-    it.skip("Add product to cart", () => {
+    it("Add product to cart", () => {
         const addressDelivery = new AddressSelectors()
         const ordersPage = new OrdersSelectors()
         addressDelivery.selectAddressOption()
         ordersPage.getSearchField().type('pasta {enter}').then(() => {
-            //ordersPage.selectOptionFood().click().then(()=>{
-            cy.get(".bc").contains('pasta').should("exist")
-            cy.get("button[data-test='cart-btn']").should('contain', '0')
-            cy.get("[data-testid='store-card']").first().click()
-            cy.get("[data-testid='store-menu-item--b110c398-6ed7-5cc5-bd69-ea1539c468a7']").click().then(() => {
-                cy.get("button").contains("Add 1 to order").click()
+            ordersPage.getDeliveryButtonOption().should('have.attr','aria-checked').and('equal', 'true');
             })
-            cy.get("button[data-test='cart-btn']").should('contain', "1")
-        })
+        ordersPage.getFieldOfBaseOfSearch().should('contain.text','pasta')
+        ordersPage.getCartButton().should('contain', '0')
+        ordersPage.getFirstRestaurant().click()
+        cy.get("[data-testid='store-menu-item--b110c398-6ed7-5cc5-bd69-ea1539c468a7']").click().then(() => {
+            cy.get("button").contains("Add 1 to order").click()
+            })
+            ordersPage.getCartButton().should('contain', "1")
         //como puedo hacer mock de una hora? par aprobar cuando un restaurant esta cerrado
     })
     it("remove an element from the cart",()=>
@@ -150,9 +150,35 @@ describe('make an order', () => {
         addressPage.selectAddressOption()
         ordersPage.getSearchField().type('sushi {enter}').then('until the action finished',()=>
         {
-            cy.get("[data-testid='store-card']").first().click()
-
+            ordersPage.getDeliveryButtonOption().should('have.attr','aria-checked').and('equal', 'true');
         })
+        ordersPage.getFirstRestaurant().click()
+        cy.get("[data-testid='store-menu-item--227a4a84-4f1c-52f9-8c65-0d74272a6493']").click()
+            cy.get("button").contains("Add 1 to order").click().then(()=>
+            {
+                ordersPage.getCartButton().should('contain', "1")
+            })
+            cy.get('[data-test="cart"]').should('be.visible')
+            cy.get("[data-testid='quantity-selector']").click({force:true}).then(()=>
+            {
+                cy.contains('Remove').click({force:true})
+            })
+            cy.get('[data-test="cart"]').should('not.be.visible')
+            ordersPage.getCartButton().should('contain', "0")
+            // ordersPage.getCartButton().click({force: true}).then(()=>
+            // {
+            //     cy.get("data-testid='quantity-selector'").contains('Remove').invoke('show').click()
+            //     ordersPage.getCartButton().should('contain', "0")
+            //     // cy.get("select option").contains('Remove').then((option)=>
+            //     // {
+            //     //     //cy.wrap(option).contains('Remove')
+            //     //     option[0].click()
+            //     //     ordersPage.getCartButton().should('contain', "0")
+
+            //     // })          
+            //  })
+            
+
     })
     /**
      * cuando el restaurant ya esta cerrado
@@ -162,7 +188,7 @@ describe('make an order', () => {
         const ordersPage = new OrdersSelectors()
         addressDelivery.selectAddressOption()
         ordersPage.getSearchField().type('pasta {enter}')
-        ordersPage.selectFirstRestaurant().first().click().then(() => {
+        ordersPage.getFirstRestaurant().first().click().then(() => {
             cy.get('[data-test="modality-pill"]').should('include.text', 'Closed')
         })
 
